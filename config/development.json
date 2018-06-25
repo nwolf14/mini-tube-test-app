@@ -1,5 +1,19 @@
 {
-	"port": 3010,
-	"host": "0.0.0.0",
-	"database": "mongodb://localhost:27010/minitube"
+	"node": {
+		"port": 3010,
+		"host": "0.0.0.0"
+	},
+	"JWT": {
+		"encryption": "secret",
+		"expiration": 10000
+	},
+	"database": {
+		"dialect": "mongo",
+		"host": "localhost",
+		"port": 27010,
+		"db_name": "minitube"
+	},
+	"react": {
+
+	}
 }
