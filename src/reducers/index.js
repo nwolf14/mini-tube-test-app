@@ -1,8 +1,11 @@
-export default function reducer(state, action) {
-	switch (action.type) {
-		case 'CHANGE_TEXT':
-			return { ...state, initialText: 'changed in the browser!' };
-		default:
-			return { ...state };
-	}
-}
+import { combineReducers } from 'redux';
+import { polyglotReducer } from 'redux-polyglot';
+
+import addMovieForm from './addMovieForm';
+import movieDetails from './movieDetails';
+
+export default combineReducers({
+	polyglot: polyglotReducer,
+	addMovieForm,
+	movieDetails	
+});

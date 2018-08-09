@@ -1,17 +1,14 @@
 import React from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 
-import Home from './components/home';
-import About from './components/about';
+import Home from './views/home';
+import About from './views/about';
 
-const App = (props) => (
+import Navigation from './components/navigation';
+
+const App = props => (
 	<div>
-		<ul>
-			<li><Link to="/">Home</Link></li>
-			<li><Link to="/about">About</Link></li>
-		</ul>
-
-		<hr />
+		<Navigation/>
 
 		<Switch>
 			<Route path="/about" component={About} />

@@ -1,9 +1,9 @@
 module.exports = {
 	mode: 'development',
 	devtool: 'cheap-module-source-map',
-	entry: './src/client.js',
+	entry: ['babel-polyfill', './client.js'],
 	output: {
-		path: __dirname + '/public',
+		path: __dirname + '/../public',
 		filename: 'bundle.js'
 	},
 	module: {

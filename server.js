@@ -1,10 +1,6 @@
 require('./api/helpers')
-
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import { StaticRouter } from 'react-router';
 import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -13,12 +9,16 @@ import passport from 'passport';
 import logger from 'morgan';
 import cors from 'cors';
 
+import { I18n } from 'react-polyglot';
+import { Provider } from 'react-redux';
+import { StaticRouter } from 'react-router';
+
 import apiRoutes from './api/routes';
-import reducers from './src/reducers';
 import App from './src/App';
+import createStoreWithMiddlewares from './createStore';
 
 const config = require('config').node;
-const server = express();
+const server = express(); 
 
 server.use(logger('dev'));
 server.use(bodyParser.json());
@@ -37,13 +37,21 @@ server.set('view engine', 'ejs');
 //
 
 server.get(/^(?!\/api.*).*/, (req, res) => {
-	const initialData = { initialText: "rendered on the server" };
-	const store = createStore(reducers, initialData);
-	const context = {};
+	const initialData = { polyglot: {} };
+	const store = createStoreWithMiddlewares(initialData);
+
+	const locale = 'en';
+	const messages = {
+		"hello_name": "Hello, %{name}.",
+		"num_cars": "%{smart_count} car |||| %{smart_count} cars",
+	}
+	
 	const initialMarkup = ReactDOMServer.renderToString(
-		<StaticRouter location={req.url} context={context}>
+		<StaticRouter location={req.url} context={{}}>
 			<Provider store={store}>
-				<App />
+				<I18n locale={locale} messages={messages}>
+					<App />
+				</I18n>
 			</Provider>
 		</StaticRouter>
 	);
