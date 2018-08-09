@@ -8,18 +8,17 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import reducers from './src/reducers';
 import rootSaga from './src/sagas';
 
+const initialData = { polyglot: {} };
+const polyglotMiddleware = createPolyglotMiddleware(
+	['LANG_PL', 'LANG_EN'],
+	action => action.payload.locale,
+	locale => new Promise(resolve => {
+		resolve(require(`./src/${locale}`));
+	})
+);
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(reducers, initialData, composeWithDevTools(applyMiddleware(thunk, sagaMiddleware, polyglotMiddleware)));
 
-export default initialData => {
-	const polyglotMiddleware = createPolyglotMiddleware(
-		['LANG_PL', 'LANG_EN'],
-		action => action.payload.locale,
-		locale => new Promise(resolve => {
-			resolve(require(`./src/${locale}`));
-		})
-	);
-	const sagaMiddleware = createSagaMiddleware();
-	const store = createStore(reducers, initialData, composeWithDevTools(applyMiddleware(thunk, sagaMiddleware, polyglotMiddleware)));
-	
-	sagaMiddleware.run(rootSaga);
-	return store;
-}
+sagaMiddleware.run(rootSaga);
+
+export default store;

@@ -9,13 +9,12 @@ import passport from 'passport';
 import logger from 'morgan';
 import cors from 'cors';
 
-import { I18n } from 'react-polyglot';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 
 import apiRoutes from './api/routes';
 import App from './src/App';
-import createStoreWithMiddlewares from './createStore';
+import store from './createStore';
 
 const config = require('config').node;
 const server = express(); 
@@ -37,9 +36,6 @@ server.set('view engine', 'ejs');
 //
 
 server.get(/^(?!\/api.*).*/, (req, res) => {
-	const initialData = { polyglot: {} };
-	const store = createStoreWithMiddlewares(initialData);
-
 	const locale = 'en';
 	const messages = {
 		"hello_name": "Hello, %{name}.",
@@ -49,16 +45,13 @@ server.get(/^(?!\/api.*).*/, (req, res) => {
 	const initialMarkup = ReactDOMServer.renderToString(
 		<StaticRouter location={req.url} context={{}}>
 			<Provider store={store}>
-				<I18n locale={locale} messages={messages}>
-					<App />
-				</I18n>
+				<App />
 			</Provider>
 		</StaticRouter>
 	);
 
 	res.render('index', {
-		initialMarkup,
-		initialData
+		initialMarkup
 	});
 });
 
