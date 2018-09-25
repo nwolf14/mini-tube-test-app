@@ -1,11 +1,10 @@
 import { combineReducers } from 'redux';
-import { polyglotReducer } from 'redux-polyglot';
+//import { polyglotReducer } from 'redux-polyglot';
 
-import addMovieForm from './addMovieForm';
-import movieDetails from './movieDetails';
+import registerForm from './registerForm';
+import userData from './user';
 
 export default combineReducers({
-	polyglot: polyglotReducer,
-	addMovieForm,
-	movieDetails	
+  registerForm,
+  userData
 });

@@ -1,61 +1,99 @@
+import v from 'validator';
 import _ from 'lodash';
-import moment from 'moment';
+
+import { getTranslations, chooseInputValidationSchema } from '../common/helpers';
+
+const T = getTranslations('forms.messages');
+
 
 export default class validator {
-	static isDateBeforeNow(input) {
-		const validatedInput = {};
-		validatedInput.errorMsg = '';
-		validatedInput.isValid = moment(input.value).isBefore(moment());
-
-		if (!validatedInput.isValid) {
-			validatedInput.errorMsg = `Please select a date from the past.`;
-		}
-		
-		return {...input, ...validatedInput};
-	}
-
-	static validateByInputType(input, inputType) {
-		switch (inputType) {
-			case 'date':
-				if (input.value && input.dateBeforeNow) {
-					return validator.isDateBeforeNow(input);
-				} else {
-					return {
-						...input,
-						isValid: true,
-						errorMsg: ''
-					};
-				}
-			default:
-                return {
-					...input,
-                    isValid: true,
-                    errorMsg: ''
-                };
-		}
-	}
-
-	static validateInput(input) {
-		const {type, required, value} = input;
-		
-		if (required && _.isEmpty(value)) {
-			return {
-				...input,
-                isValid: false,
-                errorMsg: 'Value is required'
-			};
-		}
-		
-		return validator.validateByInputType(input, type);
+	static patterns = {
+		name: /^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i,
+		address: /^\D+(,?\s[A-z0-9]+)+$/i,
+		city: /^[a-zA-Z]+(?:[\s-,][a-zA-Z]+)*$/i,
+		zipCode: /^\d{1,2}(?:[-\s]\d{2,3})?$/i,
+		password: /^[-\w\.\$@\*\!]{4,30}$/i,
+		phone: /(\(?(\+[0-9]{2,3})\)?)?([ .-]?)([0-9]{3})\2([0-9]{4})/i,
+		recaptcha: /^.+$/
 	}
 
 	static validateForm(form) {
-		const newForm = _.cloneDeep(form);
+		const validatedForm = _.cloneDeep(form);
 
-		_.map(newForm, (input, key) => {
-			newForm[key] = validator.validateInput(input);
+		_.map(validatedForm, (input, inputName) => {
+			validatedForm[inputName] = chooseInputValidationSchema(input, inputName, validatedForm);
 		});
 
-		return newForm;
+		return validatedForm;
 	}
+
+	static validateInputByPattern(input) {
+		let isValidValue;
+		input.value = v.escape(v.ltrim(input.value));
+
+		if (input.validation.pattern) {
+			isValidValue = input.value.match(input.validation.pattern);
+		} else {
+			isValidValue = true;
+		}
+		return returnInputAfterValidation(input, isValidValue);
+	};
+
+	static validateEmail(input) {
+		input.value = v.escape(v.ltrim(input.value));
+		const isValidValue = v.isEmail(input.value);
+		return returnInputAfterValidation(input, isValidValue);
+	}
+
+	static validatePhoneNumber(input) {
+		input.value = v.escape(v.ltrim(input.value));
+		const isValidValue = v.isMobilePhone(input.value);
+		return returnInputAfterValidation(input, isValidValue);
+	}
+
+	static areFieldsEqual(input, secondInput) {
+		input.value = v.escape(v.trim(input.value));
+
+		if (input.value !== secondInput.value) {
+			return serializeInput(input, false, input.validation.message.notEqual);
+		}
+
+		if (input.value.match(input.validation.pattern)) {
+			secondInput.errorMsg = null;
+			secondInput.isValid = true;
+
+			return serializeInput(input, true, null);
+
+		} else {
+			return serializeInput(input, false, input.validation.message.wrongPattern);
+		}
+	}
+
+	static validateCheckbox(input) {
+		const isValidValue = input.value;
+		return returnInputAfterValidation(input, isValidValue);
+	}
+
+
+
+}
+
+const returnInputAfterValidation = function(input, isValid = true) {
+	if (input.required && _.isEmpty(input.value)) {
+		return serializeInput(input, false, T.isRequired);
+	}
+
+	if (isValid) {
+		return serializeInput(input, isValid, null);
+	} else {
+		return serializeInput(input, false, input.validation.message);
+	}
+}
+
+const serializeInput = function(input = {}, isValid = false, errorMsg = null) {
+	return {
+		...input,
+		isValid,
+		errorMsg
+	}; 
 }
