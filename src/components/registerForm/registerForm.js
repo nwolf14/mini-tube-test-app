@@ -26,7 +26,7 @@ class RegisterForm extends Component {
     }
 
     componentDidMount() {
-        setFocusOnFirstFormElement(this.registerForm.current);
+        //setFocusOnFirstFormElement(this.registerForm.current);
     }
 
     render() {

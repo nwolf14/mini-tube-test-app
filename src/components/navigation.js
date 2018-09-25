@@ -33,7 +33,7 @@ export default class Navigation extends React.Component {
 					<NavbarBrand tag={Link} to="/">MY APP</NavbarBrand>
 					<Nav className="ml-auto" navbar>
 						<NavItem>
-							<NavLink tag={Link} to="/about">About</NavLink>
+							<NavLink tag={Link} to="/login">About</NavLink>
 						</NavItem>
 						<UncontrolledDropdown nav inNavbar>
 							<DropdownToggle nav caret>
