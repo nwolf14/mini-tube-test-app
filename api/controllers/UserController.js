@@ -21,9 +21,23 @@ const create = async function (req, res) {
 module.exports.create = create;
 
 const get = async function(req, res) {
-    return ReS(res, {success: true}, 200);
+	let err, user;
+	[err, user] = await to(User.findOne({email: req.email}));
+
+	if (err) return ReE(res, err);
+	if (!user) return ReS(res, {success: false, message: "User not found"}, 404);
+	return ReS(res, user, 200);
 }
 module.exports.get = get;
+
+const current = async function(req, res) {
+    return ReS(res, {user: {
+		id: req.user.id,
+		firstName: req.user.firstName,
+		email: req.user.email
+	}}, 200);
+}
+module.exports.current = current;
 
 const update = async function (req, res) {
 	let err, user, data

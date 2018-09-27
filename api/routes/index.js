@@ -13,6 +13,7 @@ router.get('/users', passport.authenticate('jwt', {session: false}), UserControl
 router.put('/users', passport.authenticate('jwt', {session: false}), UserController.update);
 router.delete('/users', passport.authenticate('jwt', {session: false}), UserController.remove);
 router.post('/users/login', UserController.login);
+router.get('/users/current', passport.authenticate('jwt', {session: false}), UserController.current);
 
 router.post('/companies', passport.authenticate('jwt', {session: false},  CompanyController.create));
 router.get('/companies/:company_id', passport.authenticate('jwt', {session: false},  CompanyController.get));

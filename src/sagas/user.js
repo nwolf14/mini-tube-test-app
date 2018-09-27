@@ -9,9 +9,10 @@ export function* setUser() {
   try {
     const response = yield apiClient.get(apiRoutes.VALIDATE_TOKEN);
     let user;
-
+    console.log('response: ', response);
     if (response.success) {
-      user = response;
+      
+      user = response.user;
       Object.freeze(user);
     } else {
       user = null;

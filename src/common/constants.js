@@ -33,7 +33,7 @@ const routes = {
 const apiRoutes = {
   SIGN_UP: "/api/users",
   SIGN_IN: "/api/users/login",
-  VALIDATE_TOKEN: "/api/users",
+  VALIDATE_TOKEN: "/api/users/current",
 }
 
 const LANG_PL = 'pl';
