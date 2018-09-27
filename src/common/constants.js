@@ -12,7 +12,7 @@ const ActionTypes = {
 const inputTypes = {
   LOGIN: 'login',
 	FIRST_NAME: 'firstName',
-	LAST_NAME: 'surname',
+	LAST_NAME: 'lastName',
 	EMAIL: 'email',
   PASSWORD: 'password',
   REPEAT_PASSWORD: 'repeatPassword',
@@ -31,9 +31,9 @@ const routes = {
 }
 
 const apiRoutes = {
-  SIGN_UP: "/api/users/signup",
-  SIGN_IN: "/api/users/signin",
-  VALIDATE_TOKEN: "/api/users/current",
+  SIGN_UP: "/api/users",
+  SIGN_IN: "/api/users/login",
+  VALIDATE_TOKEN: "/api/users",
 }
 
 const LANG_PL = 'pl';

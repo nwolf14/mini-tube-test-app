@@ -17,7 +17,7 @@ const getUniqueKeyFromBody = function (body) {// this is so they can send in 3 o
 module.exports.getUniqueKeyFromBody = getUniqueKeyFromBody;
 
 const createUser = async function (userInfo) {
-	let unique_key, auth_info, err;
+	let unique_key, auth_info, err, user;
 	auth_info = {}
 	auth_info.status = 'create';
 	unique_key = getUniqueKeyFromBody(userInfo);
@@ -27,18 +27,14 @@ const createUser = async function (userInfo) {
 	if (validator.isEmail(unique_key)) {
 		auth_info.method = 'email';
 		userInfo.email = unique_key;
-		[err, user] = await to(User.create(userInfo,  function (err, small) {
-			if (err) console.error(err);
-		}));
-		
+		[err, user] = await to(User.create(userInfo));
+
 		if (err) TE('user already exists with that email');
 		return user;
 	} else if (validator.isMobilePhone(unique_key, 'any')) {
 		auth_info.method = 'phone';
 		userInfo.phone = unique_key;
-		[err, user] = await to(User.create(userInfo, function (err, small) {
-			if (err) console.error(err);
-		}));
+		[err, user] = await to(User.create(userInfo));
 
 		if (err) TE('user already exists with that phone number');
 		return user;

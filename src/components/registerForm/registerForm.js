@@ -81,7 +81,7 @@ class RegisterForm extends Component {
     signupCallback = response => {
         const modifyState = {};
         const errors = _.get(response, 'errors');
-        if (!errors) {
+        if (response.success) {
             modifyState.modalContent = <h3>Success! Please verify email and then login.</h3>;
             modifyState.isRegistrationFinished = true;
             this.setState(prevState => ({

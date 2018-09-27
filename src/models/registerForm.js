@@ -54,27 +54,27 @@ function registerFormModel() {
 			message: T.messages.phone
 		}
 	}, true, inputTypes.PHONE);
-	form[inputTypes.ADDRESS] = createInputstructure('text', T.labels.address, {
-		validation: {
-			pattern: validator.patterns.address,
-			validator: validator.validateInputByPattern,
-			message: T.messages.address
-		}
-	}, true, inputTypes.ADDRESS);
-	form[inputTypes.CITY] = createInputstructure('text', T.labels.city, {
-		validation: {
-			pattern: validator.patterns.city,
-			validator: validator.validateInputByPattern,
-			message: T.messages.city
-		}
-	}, true, inputTypes.CITY);
-	form[inputTypes.ZIP_CODE] = createInputstructure('text', T.labels.zipCode, {
-		validation: {
-			pattern: validator.patterns.zipCode,
-			validator: validator.validateInputByPattern,
-			message: T.messages.zipCode
-		}
-	}, true, inputTypes.ZIP_CODE);
+	// form[inputTypes.ADDRESS] = createInputstructure('text', T.labels.address, {
+	// 	validation: {
+	// 		pattern: validator.patterns.address,
+	// 		validator: validator.validateInputByPattern,
+	// 		message: T.messages.address
+	// 	}
+	// }, true, inputTypes.ADDRESS);
+	// form[inputTypes.CITY] = createInputstructure('text', T.labels.city, {
+	// 	validation: {
+	// 		pattern: validator.patterns.city,
+	// 		validator: validator.validateInputByPattern,
+	// 		message: T.messages.city
+	// 	}
+	// }, true, inputTypes.CITY);
+	// form[inputTypes.ZIP_CODE] = createInputstructure('text', T.labels.zipCode, {
+	// 	validation: {
+	// 		pattern: validator.patterns.zipCode,
+	// 		validator: validator.validateInputByPattern,
+	// 		message: T.messages.zipCode
+	// 	}
+	// }, true, inputTypes.ZIP_CODE);
 	form[inputTypes.GDPR_AGREEMENT] = createInputstructure('checkbox', T.labels.gdprAgreement, {
 		validation: {
 			validator: validator.validateCheckbox,

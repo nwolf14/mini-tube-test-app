@@ -14,7 +14,7 @@ import { checkIfUserExists } from "./actions/user";
 
 class App extends Component {
   componentDidMount() {
-    //this.props.checkIfUserExists();
+    this.props.checkIfUserExists();
   }
 
   render() {

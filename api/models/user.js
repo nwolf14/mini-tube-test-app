@@ -2,13 +2,12 @@ const bcrypt = require('bcrypt');
 const bcrypt_p = require('bcrypt-promise');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const Company = require('./company');
 const validate = require('mongoose-validator');
 const CONFIG = require('config').JWT;
 
 let UserSchema = mongoose.Schema({
-	first: { type: String },
-	last: { type: String },
+	firstName: { type: String },
+	lastName: { type: String },
 	phone: {
 		type: String, lowercase: true, trim: true, index: true, unique: true, sparse: true, //sparse is because now we have two possible unique keys that are optional
 		validate: [validate({
@@ -24,21 +23,12 @@ let UserSchema = mongoose.Schema({
 			message: 'Not a valid email.',
 		}),]
 	},
-	password: { type: String },
-
+    password: { type: String },
+    
 }, { timestamps: true });
 
-// UserSchema.virtual('companies', {
-//     ref: 'Company',
-//     localField: '_id',
-//     foreignField: 'users.user',
-//     justOne: false,
-// });
-
 UserSchema.pre('save', async function(next){
-
     if(this.isModified('password') || this.isNew){
-
         let err, salt, hash;
         [err, salt] = await to(bcrypt.genSalt(10));
         if(err) TE(err.message, true);

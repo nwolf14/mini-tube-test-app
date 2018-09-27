@@ -20,11 +20,8 @@ const create = async function (req, res) {
 }
 module.exports.create = create;
 
-const get = async function(req, res){
-    res.setHeader('Content-Type', 'application/json');
-    let user = req.user;
-
-    return ReS(res, {user:user.toWeb()});
+const get = async function(req, res) {
+    return ReS(res, {success: true}, 200);
 }
 module.exports.get = get;
 

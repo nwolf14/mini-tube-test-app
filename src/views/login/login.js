@@ -82,7 +82,7 @@ class LoginView extends Component {
 			resolve(apiClient.post(apiRoutes.SIGN_IN, mappedForm));
 		})
 		.then((response = {}) => {
-			if(!response.errors) {
+			if(response.success) {
 				localStorage.setItem("token", response.token);
 				this.props.checkIfUserExists();
 				this.props.history.push('/');
