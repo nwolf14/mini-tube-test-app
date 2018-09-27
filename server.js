@@ -35,13 +35,7 @@ server.use('/api', apiRoutes);
 server.set('view engine', 'ejs');
 //
 
-server.get(/^(?!\/api.*).*/, (req, res) => {
-	const locale = 'en';
-	const messages = {
-		"hello_name": "Hello, %{name}.",
-		"num_cars": "%{smart_count} car |||| %{smart_count} cars",
-	}
-	
+server.get(/^(?!\/api.*).*/, (req, res) => {	
 	const initialMarkup = ReactDOMServer.renderToString(
 		<StaticRouter location={req.url} context={{}}>
 			<Provider store={store}>
